@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\LibraryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +22,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [LibraryController::class, 'index'])->name('home');
+
+Route::get('/book/add', [BookController::class, 'index'])->name('book');
+Route::post('/book', [BookController::class, 'create'])->name('book');
+Route::delete('/book/delete/{id}', [BookController::class, 'destroy'])->name('book.delete');

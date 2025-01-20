@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Book;
-use App\Models\Library;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Borrower extends Model
 {

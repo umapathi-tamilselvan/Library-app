@@ -33,3 +33,4 @@ Route::delete('/book/delete/{id}', [BookController::class, 'destroy'])->name('bo
 
 Route::get('/borrower/add', [BorrowerController::class, 'index'])->name('borrower');
 Route::post('/borrower', [BorrowerController::class, 'create'])->name('borrower');
+Route::delete('/borrower/delete/{id}',[BorrowerController::class,'destroy'])->name('borrower');

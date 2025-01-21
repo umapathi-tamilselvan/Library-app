@@ -5,9 +5,8 @@
     <div class="row">
         <!-- Sidebar -->
         <nav class="col-md-3 col-lg-2 text-dark sidebar p-0" style="position: fixed; top: 0; bottom: 0; height: 100vh; background-color: #d3d3d3;">
-
             <div class="py-3">
-                <h4 class="text-center text-uppercase fw-bold mb-3" style="bg-white" >Library Menu</h4>
+                <h4 class="text-center text-uppercase fw-bold mb-3" style="background-color: white;">Library Menu</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-3">
                         <a class="nav-link text-dark {{ request()->is('/') ? 'active bg-primary rounded' : '' }}" href="{{ url('/') }}">
@@ -25,48 +24,41 @@
                         </a>
                     </li>
                 </ul>
-    </div>
-    </nav>
-    <div class="tab-pane fade" id="borrowers" role="tabpanel">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Borrowers</h3>
             </div>
-            <div class="card-body">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Book Borrowed</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($borrowers as $borrower)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $borrower->name }}</td>
-                            <td>{{ $borrower->email }}</td>
-                            <td>{{ $borrower->book_borrowed }}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm">View</button>
-                                <button class="btn btn-danger btn-sm">Remove</button>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">No borrowers found.</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-                <a href="{{ url('borrower/add') }}" class="btn btn-success mt-3">Add New Borrower</a>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="py-4">
+                <h3 class="mb-4">Add New Book</h3>
+                <div class="container" style="max-width: 600px;">
+                    <form action="{{ url('/borrower') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Borrower Name</label>
+                            <input type="text" class="form-control" id="name"  value="{{ old('name') }}"  name="name" required>
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="email" name="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mobile_no" class="form-label">Mobile Number</label>
+                            <input type="number" class="form-control @error('mobile_no') is-invalid @enderror" id="mobile_no" name="mobile_no" value="{{ old('mobile_no') }}" required>
+                            @error('mobile_no')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Add Borrower</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-
-</div>
 </div>
 @endsection

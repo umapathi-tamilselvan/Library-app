@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    
+
     public function index()
     {
         return view('book.create');
@@ -20,21 +22,17 @@ class BookController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image validation
         ]);
 
-        // Handle the image upload
         $imagePath = null;
         if ($request->hasFile('image')) {
-            // Store the image and get the file path
             $imagePath = $request->file('image')->store('books', 'public');
         }
 
-        // Create a new book
-        $book = new Book();
+        $book = new Book;
         $book->name = $request->name;
         $book->author = $request->author;
-        $book->image = $imagePath; // Save the image path
+        $book->image = $imagePath;
         $book->save();
 
-        // Redirect with success message
         return redirect()->route('home')->with('success', 'Book added successfully!');
     }
 

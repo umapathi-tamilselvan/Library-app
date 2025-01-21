@@ -28,5 +28,14 @@ class BorrowerController extends Controller
         return redirect()->route('home');
     }
 
+    public function destroy($id)
+    {
+        $borrower = Borrower::findOrFail($id);
+        $borrower->delete();
+
+        return redirect()->back();
+
+    }
+
 
 }

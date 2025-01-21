@@ -55,7 +55,11 @@
                                     <td>{{ $borrower->mobile_no }}</td>
                                     <td>
                                         <button class="btn btn-primary btn-sm">View</button>
-                                        <button class="btn btn-danger btn-sm">Remove</button>
+                                        <form action="{{ url('/borrower/delete', $borrower->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @empty

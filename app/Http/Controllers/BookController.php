@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    
-
     public function index()
     {
         return view('book.create');
@@ -19,7 +17,7 @@ class BookController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image validation
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $imagePath = null;
@@ -38,10 +36,9 @@ class BookController extends Controller
 
     public function destroy($id)
     {
-        $books = Book::findOrFail($id);
-        $books->delete();
+        $book = Book::findOrFail($id); // Use singular $book for clarity
+        $book->delete();
 
-        return redirect()->back();
-
+        return redirect()->back()->with('success', 'Book deleted successfully!'); // Add success message after deletion
     }
 }

@@ -31,11 +31,13 @@
         <div class="col-md-9 offset-md-3 col-lg-10 offset-lg-2">
             <div class="tab-pane fade show active" id="books" role="tabpanel">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Books</h3>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0">Books</h3>
+                        <a href="{{ url('book/add') }}" class="btn btn-primary">Add Book</a>
                     </div>
+
                     <div class="card-body">
-                        <!-- Table for Books -->
+
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -70,9 +72,9 @@
                                 @endforelse
                             </tbody>
                         </table>
-
+                        {!! $books->withQueryString()->links('pagination::bootstrap-5') !!}
                         <!-- Add Book Button -->
-                        <a href="{{ url('book/add') }}" class="btn btn-primary mt-3">Add Book</a>
+
                     </div>
                 </div>
             </div>

@@ -20,11 +20,12 @@ class BorrowerController extends Controller
             'mobile_no' => 'required|max:12',
         ]);
 
-        $borrowers =new Borrower;
+        $borrowers = new Borrower;
         $borrowers->name = $request->name;
         $borrowers->email = $request->email;
         $borrowers->mobile_no = $request->mobile_no;
         $borrowers->save();
+
         return redirect()->route('home');
     }
 
@@ -36,6 +37,4 @@ class BorrowerController extends Controller
         return redirect()->back();
 
     }
-
-
 }

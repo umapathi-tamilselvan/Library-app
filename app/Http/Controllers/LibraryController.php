@@ -9,24 +9,23 @@ class LibraryController extends Controller
 {
     public function book()
     {
-        $books = Book::all();
-        return view('book.book',compact('books'));
+        $books = Book::paginate(10);
+
+        return view('book.book', compact('books'));
     }
 
     public function borrower()
     {
-        $borrowers = Borrower::all();
-        return view('borrower.borrower',compact('borrowers'));
+        $borrowers = Borrower::paginate(10);
+
+        return view('borrower.borrower', compact('borrowers'));
     }
 
     public function index()
     {
-        $books = Book::all();
-        $borrowers = Borrower::all();
-        $bookCount = $books->count();
-        $borrowerCount = $borrowers->count();
+        $bookCount = Book::count();
+        $borrowerCount = Borrower::count();
 
-        return view(('home'), compact('books', 'borrowers', 'bookCount','borrowerCount'));
-
+        return view('home', compact('bookCount', 'borrowerCount'));
     }
 }

@@ -31,9 +31,11 @@
         <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="margin-left: 25%; padding-top: 20px;">
             <div class="tab-pane fade show active" id="borrowers" role="tabpanel">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Borrowers</h3>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0">Borrower</h3>
+                        <a href="{{ url('borrower/add') }}" class="btn btn-success mt-3">Add New Borrower</a>
                     </div>
+
                     <div class="card-body">
                         <!-- Borrowers Table -->
                         <table class="table table-bordered table-hover">
@@ -69,8 +71,9 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <!-- Add Borrower Button -->
-                        <a href="{{ url('borrower/add') }}" class="btn btn-success mt-3">Add New Borrower</a>
+                        {!! $borrowers->withQueryString()->links('pagination::bootstrap-5') !!}
+
+
                     </div>
                 </div>
             </div>

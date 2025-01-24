@@ -23,6 +23,11 @@
                             <i class="bi bi-people me-2"></i> Borrowers
                         </a>
                     </li>
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-dark {{ request()->is('category') ? 'active bg-primary rounded' : '' }}" href="{{ url('/category') }}">
+                            <i class="bi bi-people me-2"></i> Category
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -37,44 +42,48 @@
                     </div>
 
                     <div class="card-body">
-
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>S.No</th>
                                     <th>Title</th>
                                     <th>Author</th>
+                                    <th>Category</th>
+                                    <th>Total Copies</th>
+                                    <th>Available Copies</th>
                                     <th>Image</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($books as $book)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $book->name }}</td>
-                                    <td>{{ $book->author }}</td>
-                                    <td>
-                                        <img src="{{ asset($book->image ? 'storage/' . $book->image : 'images/default-book.png') }}" alt="{{ $book->name }}" width="50" height="75">
-                                    </td>
-                                    <td>
-                                        <form action="{{ url('/book/delete', $book->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $book->name }}</td>
+                                        <td>{{ $book->author }}</td>
+                                        <td>{{ $book->category->name }}</td>
+                                        <td>{{ $book->total_copies }}</td>
+                                        <td>{{ $book->available_copies }}</td>
+                                        <td>
+                                            <img src="{{ asset($book->image ? 'storage/' . $book->image : 'images/default-book.png') }}"
+                                                 alt="{{ $book->name }}" width="50" height="75">
+                                        </td>
+                                        <td>
+                                            <form action="{{ url('/book/delete', $book->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 @empty
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted">No books found.</td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="8" class="text-center text-muted">No books found.</td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
                         {!! $books->withQueryString()->links('pagination::bootstrap-5') !!}
-                        <!-- Add Book Button -->
-
                     </div>
                 </div>
             </div>

@@ -23,6 +23,11 @@
                             <i class="bi bi-people me-2"></i> Borrowers
                         </a>
                     </li>
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-dark {{ request()->is('category') ? 'active bg-primary rounded' : '' }}" href="{{ url('/category') }}">
+                            <i class="bi bi-people me-2"></i> Category
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>

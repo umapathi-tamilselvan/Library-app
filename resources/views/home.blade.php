@@ -8,21 +8,18 @@
             <div class="py-3">
                 <h4 class="text-center text-uppercase fw-bold mb-3" style="background-color: white;">Library Menu</h4>
                 <ul class="nav flex-column">
+                    @foreach([
+                        ['url' => '/home', 'icon' => 'bi-house-door', 'label' => 'Dashboard'],
+                        ['url' => '/books', 'icon' => 'bi-book', 'label' => 'Books'],
+                        ['url' => '/borrowers', 'icon' => 'bi-people', 'label' => 'Borrowers'],
+                        ['url' => '/category', 'icon' => 'bi-people', 'label' => 'Category']
+                    ] as $menuItem)
                     <li class="nav-item mb-3">
-                        <a class="nav-link text-dark {{ request()->is('/') ? 'active bg-primary rounded' : '' }}" href="{{ url('/home') }}">
-                            <i class="bi bi-house-door fw-bold me-2"></i> Dashboard
+                        <a class="nav-link text-dark {{ request()->is(ltrim($menuItem['url'], '/')) ? 'active bg-primary rounded' : '' }}" href="{{ url($menuItem['url']) }}">
+                            <i class="bi {{ $menuItem['icon'] }} fw-bold me-2"></i> {{ $menuItem['label'] }}
                         </a>
                     </li>
-                    <li class="nav-item mb-3">
-                        <a class="nav-link text-dark {{ request()->is('books') ? 'active bg-primary rounded' : '' }}" href="{{ url('/books') }}">
-                            <i class="bi bi-book me-2"></i> Books
-                        </a>
-                    </li>
-                    <li class="nav-item mb-3">
-                        <a class="nav-link text-dark {{ request()->is('borrowers') ? 'active bg-primary rounded' : '' }}" href="{{ url('/borrowers') }}">
-                            <i class="bi bi-people me-2"></i> Borrowers
-                        </a>
-                    </li>
+                    @endforeach
                 </ul>
             </div>
         </nav>
@@ -32,25 +29,37 @@
             <div class="py-4">
                 <!-- Stats Cards -->
                 <div class="row g-4">
-                    <!-- Total Books Card -->
+                    @foreach([
+                        ['bgClass' => 'bg-light-success', 'icon' => 'bi-book-fill', 'title' => 'Total Books', 'count' => $bookCount, 'textClass' => 'text-primary'],
+                        ['bgClass' => 'bg-light-warning', 'icon' => 'bi-book-half', 'title' => 'Available Books', 'count' => $availableBookCount, 'textClass' => 'text-info'],
+                        ['bgClass' => 'bg-light-info', 'icon' => 'bi-people-fill', 'title' => 'Borrowers', 'count' => $borrowerCount, 'textClass' => 'text-success']
+                    ] as $card)
                     <div class="col-md-3 col-sm-6">
-                        <div class="card bg-light-success hoverable">
+                        <div class="card {{ $card['bgClass'] }} hoverable">
                             <div class="card-body text-center">
-                                <h5 class="text-primary fw-bold"><i class="bi bi-book-fill"></i> Total Books</h5>
-                                <p class="fs-3 fw-bold">{{ $bookCount }}</p>
+                                <h5 class="{{ $card['textClass'] }} fw-bold"><i class="bi {{ $card['icon'] }}"></i> {{ $card['title'] }}</h5>
+                                <p class="fs-3 fw-bold">{{ $card['count'] }}</p>
                             </div>
                         </div>
                     </div>
+                    @endforeach
+                </div>
 
-                    <!-- Borrowers Card -->
+                <!-- Category-wise Books -->
+                <div class="row g-4 mt-4">
+                    @foreach($categories as $category)
                     <div class="col-md-3 col-sm-6">
-                        <div class="card bg-light-info hoverable">
+                        <div class="card bg-light-primary hoverable">
                             <div class="card-body text-center">
-                                <h5 class="text-success fw-bold"><i class="bi bi-people-fill"></i> Borrowers</h5>
-                                <p class="fs-3 fw-bold">{{ $borrowerCount }}</p>
+                                <h5 class="text-dark fw-bold"><i class="bi bi-folder-fill"></i> {{ $category->name }}</h5>
+                                <p class="fs-3 fw-bold">
+                                    {{ $category->books ? $category->books->count() : 0 }}
+                                </p>
+                                <small class="text-muted">Books in this category</small>
                             </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
             </div>
         </main>

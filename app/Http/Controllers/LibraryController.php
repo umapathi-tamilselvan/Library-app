@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Borrower;
+use App\Models\Category;
 
 class LibraryController extends Controller
 {
@@ -23,9 +24,11 @@ class LibraryController extends Controller
 
     public function index()
     {
-        $bookCount = Book::count();
+        $bookCount = Book::where('available_copies', '>', 0)->sum('available_copies');
+        $availableBookCount = Book::where('available_copies', '>', 0)->count();
         $borrowerCount = Borrower::count();
+        $categories = Category::withCount('books')->get();
 
-        return view('home', compact('bookCount', 'borrowerCount'));
+        return view('home', compact('bookCount', 'borrowerCount', 'categories', 'availableBookCount'));
     }
 }

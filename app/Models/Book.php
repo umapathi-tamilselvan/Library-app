@@ -9,7 +9,7 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['name', 'author', 'category_id', 'total_copies', 'available_copies', 'image'];
 
     public function library()
     {
@@ -19,6 +19,10 @@ class Book extends Model
     public function borrower()
     {
         return $this->hasMany(Borrower::class);
+    }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

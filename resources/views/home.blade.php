@@ -1,65 +1,132 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid bg-light" style="min-height: 100vh;">
     <div class="row">
         <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 text-dark sidebar p-0" style="position: fixed; top: 0; bottom: 0; height: 100vh; background-color: #d3d3d3;">
-            <div class="py-3">
-                <h4 class="text-center text-uppercase fw-bold mb-3" style="background-color: white;">Library Menu</h4>
-                <ul class="nav flex-column">
-                    @foreach([
-                        ['url' => '/home', 'icon' => 'bi-house-door', 'label' => 'Dashboard'],
-                        ['url' => '/books', 'icon' => 'bi-book', 'label' => 'Books'],
-                        ['url' => '/borrowers', 'icon' => 'bi-people', 'label' => 'Borrowers'],
-                        ['url' => '/category', 'icon' => 'bi-people', 'label' => 'Category']
-                    ] as $menuItem)
-                    <li class="nav-item mb-3">
-                        <a class="nav-link text-dark {{ request()->is(ltrim($menuItem['url'], '/')) ? 'active bg-primary rounded' : '' }}" href="{{ url($menuItem['url']) }}">
-                            <i class="bi {{ $menuItem['icon'] }} fw-bold me-2"></i> {{ $menuItem['label'] }}
+        <nav class="card-body col-md-3 col-lg-2 p-0 mt-0 shadow-lg" style="background-color: #f5f5f5; position: fixed; top: 0; left: 0; width: 300px; height: 100vh; border-right: 1px solid #e0e0e0;">
+            <a href="{{ url('/home') }}" class="d-block text-center fw-bold mb-4" style="background-color: #ffffff; padding: 15px; border-bottom: 1px solid #ddd; text-decoration: none;">
+                <h4 class="mb-0">Library Menu</h4>
+            </a>
+
+            <ul class="nav flex-column px-3">
+                @foreach([
+                    ['url' => '/home', 'icon' => 'bi-house-door', 'label' => 'Dashboard'],
+                    ['url' => '/books', 'icon' => 'bi-book', 'label' => 'Books'],
+                    ['url' => '/borrowers', 'icon' => 'bi-people', 'label' => 'Borrowers'],
+                    ['url' => '/category', 'icon' => 'bi-folder', 'label' => 'Category']
+                ] as $menuItem)
+                    <li class="nav-item mb-2">
+                        <a class="nav-link d-flex align-items-center {{ request()->is(ltrim($menuItem['url'], '/')) ? 'active bg-primary text-white' : 'text-dark' }}"
+                           href="{{ url($menuItem['url']) }}"
+                           style="padding: 12px 15px; border-radius: 8px; font-size: 14px;">
+                            <i class="bi {{ $menuItem['icon'] }} me-2 fs-5"></i>
+                            <span>{{ $menuItem['label'] }}</span>
                         </a>
                     </li>
-                    @endforeach
-                </ul>
-            </div>
+                @endforeach
+            </ul>
         </nav>
 
         <!-- Main Content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="margin-left: 25%; padding-top: 20px;">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="margin-left: 220px; padding-top: 20px;">
             <div class="py-4">
-                <!-- Stats Cards -->
-                <div class="row g-4">
-                    @foreach([
-                        ['bgClass' => 'bg-light-success', 'icon' => 'bi-book-fill', 'title' => 'Total Books', 'count' => $bookCount, 'textClass' => 'text-primary'],
-                        ['bgClass' => 'bg-light-warning', 'icon' => 'bi-book-half', 'title' => 'Available Books', 'count' => $availableBookCount, 'textClass' => 'text-info'],
-                        ['bgClass' => 'bg-light-info', 'icon' => 'bi-people-fill', 'title' => 'Borrowers', 'count' => $borrowerCount, 'textClass' => 'text-success']
-                    ] as $card)
-                    <div class="col-md-3 col-sm-6">
-                        <div class="card {{ $card['bgClass'] }} hoverable">
-                            <div class="card-body text-center">
-                                <h5 class="{{ $card['textClass'] }} fw-bold"><i class="bi {{ $card['icon'] }}"></i> {{ $card['title'] }}</h5>
-                                <p class="fs-3 fw-bold">{{ $card['count'] }}</p>
-                            </div>
+                <!-- Search Bar on Top (Fixed) -->
+                <div class="d-flex justify-content-center mb-4" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 999; width: 500px;">
+                    <form action="{{ url('/search') }}" method="GET" class="w-100">
+                        <div class="input-group">
+                            <input type="text" name="query" class="form-control" placeholder="Search..." value="{{ request('query') }}" style="min-width: 200px;">
+                            <button class="btn btn-outline-primary" type="submit">
+                                <i class="bi bi-search fs-5"></i>
+                            </button>
                         </div>
-                    </div>
-                    @endforeach
+                    </form>
                 </div>
 
-                <!-- Category-wise Books -->
-                <div class="row g-4 mt-4">
-                    @foreach($categories as $category)
-                    <div class="col-md-3 col-sm-6">
-                        <div class="card bg-light-primary hoverable">
-                            <div class="card-body text-center">
-                                <h5 class="text-dark fw-bold"><i class="bi bi-folder-fill"></i> {{ $category->name }}</h5>
-                                <p class="fs-3 fw-bold">
-                                    {{ $category->books ? $category->books->count() : 0 }}
-                                </p>
-                                <small class="text-muted">Books in this category</small>
+                <!-- Add margin-top to prevent content from being hidden behind the fixed search bar -->
+                <div class="mt-5">
+                    <!-- Stats Cards (unchanged) -->
+                    <div class="row g-4">
+                        @foreach([
+                            ['bgClass' => 'bg-white', 'icon' => 'bi-book-fill', 'title' => 'Total Books', 'count' => $bookCount, 'textClass' => 'text-primary'],
+                            ['bgClass' => 'bg-white', 'icon' => 'bi-book-half', 'title' => 'Available Books', 'count' => $availableBookCount, 'textClass' => 'text-info'],
+                            ['bgClass' => 'bg-white', 'icon' => 'bi-people-fill', 'title' => 'Borrowers', 'count' => $borrowerCount, 'textClass' => 'text-success']
+                        ] as $card)
+                            <div class="col-md-4 col-sm-6">
+                                <div class="card {{ $card['bgClass'] }} shadow-lg hover-shadow-lg" style="border-radius: 15px; border: 1px solid #e0e0e0; transition: all 0.3s ease;">
+                                    <div class="card-body text-center">
+                                        <h6 class="{{ $card['textClass'] }} fw-bold mb-2">
+                                            <i class="bi {{ $card['icon'] }} fs-4"></i> {{ $card['title'] }}
+                                        </h6>
+                                        <p class="fs-4 fw-bold mb-0">{{ $card['count'] }}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
+
+                    <!-- Category-wise Books (unchanged) -->
+                    <div class="row g-4 mt-4">
+                        @foreach($categories as $category)
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card bg-white shadow-lg hover-shadow-lg" style="border-radius: 15px; border: 1px solid #e0e0e0; transition: all 0.3s ease;">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-dark fw-bold mb-2">
+                                            <i class="bi bi-folder-fill fs-5"></i> {{ $category->name }}
+                                        </h6>
+                                        <p class="fs-4 fw-bold mb-1">{{ $category->books_count ?? 0 }}</p>
+                                        <small class="text-muted">Books in this category</small>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Search Results (unchanged) -->
+                    @if(request('query'))
+                        <div class="mt-4">
+                            <h4>Search Results for "{{ request('query') }}"</h4>
+
+                            @if($books->isEmpty() && $borrowers->isEmpty() && $categories->isEmpty())
+                                <p>No results found.</p>
+                            @else
+                                <div class="row">
+                                    @if($books->isNotEmpty())
+                                        <div class="col-md-4">
+                                            <h5>Books</h5>
+                                            <ul>
+                                                @foreach($books as $book)
+                                                    <li>{{ $book->title }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
+                                    @if($borrowers->isNotEmpty())
+                                        <div class="col-md-4">
+                                            <h5>Borrowers</h5>
+                                            <ul>
+                                                @foreach($borrowers as $borrower)
+                                                    <li>{{ $borrower->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
+                                    @if($categories->isNotEmpty())
+                                        <div class="col-md-4">
+                                            <h5>Categories</h5>
+                                            <ul>
+                                                @foreach($categories as $category)
+                                                    <li>{{ $category->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+                    @endif
                 </div>
             </div>
         </main>

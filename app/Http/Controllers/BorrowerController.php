@@ -14,17 +14,12 @@ class BorrowerController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required',
             'email' => 'required',
             'mobile_no' => 'required|max:12',
         ]);
-
-        $borrowers = new Borrower;
-        $borrowers->name = $request->name;
-        $borrowers->email = $request->email;
-        $borrowers->mobile_no = $request->mobile_no;
-        $borrowers->save();
+        Borrower::create($validated);
 
         return redirect()->route('home');
     }

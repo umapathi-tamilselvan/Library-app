@@ -8,51 +8,46 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    /**
+     * Show the form to create a book with categories.
+     */
     public function index()
     {
-        $categories = Category::with('books')->get();
-        return view('book.create', compact('categories'));
+        return view('book.create', [
+            'categories' => Category::all(),
+        ]);
     }
 
+    /**
+     * Store a new book.
+     */
     public function create(Request $request)
     {
-        // Validate the input
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'total_copies' => 'required|integer|min:0',
-            'available_copies' => 'required|integer|min:0|max:'.$request->total_copies,
+            'available_copies' => 'required|integer|min:0|max:'.$request->input('total_copies'),
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Handle image upload if present
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('books', 'public');
-        }
+        $validated['image'] = $request->hasFile('image')
+            ? $request->file('image')->store('books', 'public')
+            : null;
 
-        // Create a new Book instance
-        $book = new Book;
-        $book->name = $validated['name'];
-        $book->author = $validated['author'];
-        $book->category_id = $validated['category_id'];
-        $book->total_copies = $validated['total_copies'];
-        $book->available_copies = $validated['available_copies'];
-        $book->image = $imagePath;
+        Book::create($validated);
 
-        // Save the book to the database
-        $book->save();
-
-        // Redirect with success message
         return redirect()->route('home')->with('success', 'Book added successfully!');
     }
 
+    /**
+     * Delete a book.
+     */
     public function destroy($id)
     {
-        $book = Book::findOrFail($id); // Use singular $book for clarity
-        $book->delete();
+        Book::destroy($id);
 
-        return redirect()->back()->with('success', 'Book deleted successfully!'); // Add success message after deletion
+        return redirect()->back()->with('success', 'Book deleted successfully!');
     }
 }

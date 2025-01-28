@@ -8,40 +8,35 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Metronic CSS -->
-    <link href="{{ asset('path-to-metronic/css/style.bundle.css') }}" rel="stylesheet">
-    <!-- Metronic JS -->
-    <script src="{{ asset('path-to-metronic/js/scripts.bundle.js') }}" defer></script>
+<!-- Metronic CSS -->
+<link href="{{ asset('path-to-metronic/css/style.bundle.css') }}" rel="stylesheet">
+<!-- Metronic JS -->
+<script src="{{ asset('path-to-metronic/js/scripts.bundle.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Scripts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body class="app-blank">
+<body>
     <div id="app">
-        <!-- Metronic Header -->
-        <header id="kt_header" class="header align-items-stretch">
-            <div class="container-fluid d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <!-- Logo -->
-                    <a href="{{ url('/') }}" class="navbar-brand">
-                        <img src="{{ asset('path-to-metronic/media/logos/logo.png') }}" alt="Logo" class="logo">
-                    </a>
-                </div>
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <div class="container">
 
-                <!-- Navbar -->
-                <div class="d-flex align-items-center">
-                    <!-- Left Side of Navbar (Optional) -->
-                    <ul class="navbar-nav me-auto"></ul>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                    <!-- Right Side of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav me-auto">
+                    </ul>
+
+
+                    <ul class="navbar-nav custom-margin-left">
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -76,29 +71,13 @@
                         @endguest
                     </ul>
                 </div>
-            </div>
-        </header>
 
-        <!-- Metronic Main Content -->
+            </div>
+        </nav>
+
         <main class="py-4">
             @yield('content')
         </main>
-
-        <!-- Metronic Footer -->
-        <footer class="footer py-4">
-            <div class="container-fluid d-flex justify-content-between align-items-center">
-                <div class="text-muted">
-                    &copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. All rights reserved.
-                </div>
-                <div class="text-muted">
-                    <a href="https://www.yourwebsite.com/privacy-policy" class="text-decoration-none">Privacy Policy</a> |
-                    <a href="https://www.yourwebsite.com/terms-of-service" class="text-decoration-none">Terms of Service</a>
-                </div>
-            </div>
-        </footer>
     </div>
-
-    <!-- Metronic JS -->
-    <script src="{{ asset('path-to-metronic/js/scripts.bundle.js') }}"></script>
 </body>
 </html>

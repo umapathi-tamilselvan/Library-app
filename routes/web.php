@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LibraryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/search', [HomeController::class, 'index'])->name('search');
 
 Route::get('/home', [LibraryController::class, 'index'])->name('home');
 Route::get('/books', [LibraryController::class, 'book'])->name('books');

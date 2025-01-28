@@ -21,8 +21,7 @@ class BookFactory extends Factory
     {
         Storage::disk('public')->makeDirectory('books');
 
-        // Download a fake realistic image
-        $imageUrl = 'https://picsum.photos/640/480'; // URL for realistic images
+        $imageUrl = 'https://picsum.photos/640/480';
         $imageName = Str::random(10).'.jpg';
         $imagePath = 'books/'.$imageName;
 
@@ -30,9 +29,11 @@ class BookFactory extends Factory
         Storage::disk('public')->put($imagePath, $imageContent);
 
         return [
-            'name' => $this->faker->sentence(3), // Generate a random book title
-            'author' => $this->faker->name,      // Generate a random author name
-            'image' => $imagePath,              // Path to the downloaded image
+            'name' => $this->faker->sentence(3),
+            'author' => $this->faker->name,
+            'image' => $imagePath,
+            'total_copies' => '10',
+            'category_id' => \App\Models\Category::inRandomOrder()->first()->id, // Assign random category
         ];
     }
 }

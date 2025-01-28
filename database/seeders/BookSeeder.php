@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class BookSeeder extends Seeder
@@ -14,6 +15,8 @@ class BookSeeder extends Seeder
      */
     public function run()
     {
+        $categories = Category::factory(10)->create();
+
         Book::factory(100)->create();
     }
 }

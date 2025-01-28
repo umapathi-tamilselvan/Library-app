@@ -18,8 +18,7 @@ class BookFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition()
-    {
-        Storage::disk('public')->makeDirectory('books');
+    {Storage::disk('public')->makeDirectory('books');
 
         $imageUrl = 'https://picsum.photos/640/480';
         $imageName = Str::random(10).'.jpg';
@@ -36,4 +35,5 @@ class BookFactory extends Factory
             'category_id' => \App\Models\Category::inRandomOrder()->first()->id, // Assign random category
         ];
     }
+
 }
